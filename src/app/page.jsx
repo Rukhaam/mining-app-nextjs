@@ -104,6 +104,7 @@ export default function AdminDashboard() {
               <Input label="Consignee Details" name="consignee_details" required onChange={handleChange} />
               <Input label="Driver Name & Phone" name="driver_details" required onChange={handleChange} />
               <Input label="Valid From (Time of Dispatch)" name="valid_from" type="datetime-local" required onChange={handleChange} />
+              <Input label="Valid Upto (Expiry Time)" name="valid_upto" type="datetime-local" required onChange={handleChange} />
 
               <div className="md:col-span-2 pt-6">
                 <Button type="submit" disabled={loading} className="w-full text-lg">

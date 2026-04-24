@@ -19,7 +19,7 @@ export async function createDispatchAction(formData) {
 
     // 2. Parse the frontend time and calculate the 4-hour strict expiry
     const validFromDate = new Date(formData.valid_from);
-    const validUptoDate = new Date(validFromDate.getTime() + 4 * 60 * 60 * 1000);
+    const validUptoDate = new Date(formData.valid_upto)
 
     // 3. Assemble the secure payload
     const payload = {
