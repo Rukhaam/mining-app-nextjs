@@ -308,7 +308,34 @@ export default function PrintableReceipt({ dispatchData, qrId, onBack }) {
             filter: saturate(5.0);
           }
 
-          /* --- UPDATED PRINT MEDIA QUERY --- */
+          /* --- FINAL MOBILE SCALING FIX --- */
+          @media screen and (max-width: 640px) {
+            .receipt-shell {
+              /* Remove flex entirely on mobile. Flex center pushes oversized items off the left edge. */
+              display: block; 
+              padding: 16px; 
+              overflow-x: hidden;
+              overdflow-y: hidden;
+              scale: 1; /* Ensure no inherited scaling from desktop */
+              margin-left: -10px; /* Counteract the 16px padding to allow full bleed to the left edge */
+             
+         
+            }
+            
+            .receipt-shell-inner {\
+            scale: 0.7; /* Reset any inherited scaling */
+              /* Reset margin so it aligns exactly to the 16px left padding */
+              margin: 0; 
+              /* Pin the scaling anchor to the true top-left corner */
+              transform-origin: top left;
+              /* Scale perfectly into the available space (100% width minus the 32px of side padding) */
+              transform: scale(calc((100vw - 32px) / 600));
+              /* Adjust bottom margin to remove the empty space left by scaling */
+              margin-bottom: calc(-890px * (1 - ((100vw - 32px) / 600))); 
+            }
+          }
+
+          /* --- PRINT MEDIA QUERY --- */
           @media print {
             @page {
               size: 600px 842px;
@@ -320,7 +347,7 @@ export default function PrintableReceipt({ dispatchData, qrId, onBack }) {
               margin: 0 !important;
               padding: 0 !important;
               height: 100vh !important;
-              overflow: hidden !important; /* Strictly prevents body scrolling/extra pages */
+              overflow: hidden !important; 
               background: #ffffff !important;
             }
 
@@ -337,6 +364,7 @@ export default function PrintableReceipt({ dispatchData, qrId, onBack }) {
             .receipt-shell-inner {
               width: 600px;
               margin: 0;
+              transform: none; /* Reset mobile transform for printing */
             }
 
             .receipt-toolbar {
@@ -345,14 +373,14 @@ export default function PrintableReceipt({ dispatchData, qrId, onBack }) {
 
             .receipt-page {
               width: 600px;
-              height: 842px !important; /* Changed from min-height to strictly fixed height */
-              max-height: 842px; /* Force bounds */
+              height: 842px !important; 
+              max-height: 842px; 
               margin: 0;
-              padding: 9px 17px 14px; /* Retain padding inside the fixed height */
+              padding: 9px 17px 14px; 
               border: 2px solid #1f1f1f;
               box-shadow: none;
-              overflow: hidden; /* Clips micro-overflows */
-              page-break-inside: avoid; /* Tells browser not to split this element */
+              overflow: hidden; 
+              page-break-inside: avoid; 
               break-inside: avoid;
             }
           }
