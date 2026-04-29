@@ -1,131 +1,489 @@
 "use client";
 
 import React from "react";
+import { ArrowLeft, Printer } from "lucide-react";
 import { QRCodeCanvas } from "qrcode.react";
 
+const PLACEHOLDER = ".................................";
+const WATERMARK_ITEMS = Array.from({ length: 96 });
+
+function ReceiptRow({ number, children, strong = false, className = "" }) {
+  return (
+    <div className={`receipt-row ${strong ? "is-strong" : ""} ${className}`}>
+      <span className="receipt-number">{number ? `${number}.` : ""}</span>
+      <span className="receipt-row-text">{children}</span>
+    </div>
+  );
+}
+
 export default function PrintableReceipt({ dispatchData, qrId, onBack }) {
-  const verificationUrl = typeof window !== 'undefined' ? `${window.location.origin}/verify/${qrId}` : '';
+  const data = dispatchData || {};
+  const [verificationUrl, setVerificationUrl] = React.useState("");
+
+  React.useEffect(() => {
+    setVerificationUrl(`${window.location.origin}/verify/${qrId || ""}`);
+  }, [qrId]);
+
+  const pad = (value) => String(value).padStart(2, "0");
+
+  const getDate = (dateString) => {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+    return Number.isNaN(date.getTime()) ? null : date;
+  };
 
   const formatDate = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-IN", { day: "2-digit", month: "2-digit", year: "numeric" }).replace(/\//g, "-");
+    const date = getDate(dateString);
+    if (!date) return "";
+    return `${pad(date.getDate())}-${pad(date.getMonth() + 1)}-${date.getFullYear()}`;
   };
 
   const formatDateTime = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    return date.toLocaleString("en-IN", {
-      day: "2-digit", month: "2-digit", year: "numeric",
-      hour: "2-digit", minute: "2-digit", hour12: true,
-    }).replace(/\//g, "-");
+    const date = getDate(dateString);
+    if (!date) return "";
+
+    const hours = date.getHours();
+    const period = hours >= 12 ? "PM" : "AM";
+    const hour12 = hours % 12 || 12;
+
+    return `${formatDate(dateString)} ${pad(hour12)}:${pad(date.getMinutes())} ${period}`;
   };
 
-  return (
-    <div className="bg-gray-200 min-h-screen p-5 print:bg-white print:p-0 flex justify-center">
-      <div className="w-full max-w-4xl">
-        <div className="flex justify-between mb-4 print:hidden">
-          <button
-            onClick={onBack}
-            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 transition text-white rounded shadow-sm"
-          >
-            Back
-          </button>
-          <button
-            onClick={() => window.print()}
-            className="px-6 py-2 bg-gray-800 hover:bg-gray-900 transition text-white rounded shadow-sm flex items-center gap-2"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
-            </svg>
-            Print E-Challan
-          </button>
-        </div>
+  const value = (field, fallback = PLACEHOLDER) => field || fallback;
+  const rupees = (field) => (field ? `Rs.${field}` : "Rs.");
+  const sellerAndLocation = [data.seller_name, data.seller_location].filter(Boolean).join(" ");
+  const qrValue = verificationUrl || `/verify/${qrId || ""}`;
 
-        <div className="relative overflow-hidden bg-white border border-gray-300 p-8 sm:p-12 print:px-6 print:py-4 text-[14px] print:text-[13px] leading-relaxed print:leading-snug text-black shadow-lg print:shadow-none print:border-none">
-          
-          <div className="absolute inset-[-60%] z-1000 flex flex-wrap justify-center items-center gap-x-5 gap-y-4 pointer-events-none opacity-[0.06] print:opacity-[0.05] select-none">
-            {Array.from({ length: 650 }).map((_, i) => (
-              <a key={i} href="https://geologymining.jk.gov.in/" target="_blank" rel="noopener noreferrer" className="text-sm sm:text-sm font-black text-black whitespace-nowrap pointer-events-auto hover:text-blue-800 transition-colors">
-                https://geologymining.jk.gov.in/
-              </a>
-            ))}
+  return (
+    <>
+      <style>
+        {`
+          .receipt-shell {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            background: #d7d7d7;
+            padding: 20px;
+          }
+
+          .receipt-shell-inner {
+            width: 600px;
+          }
+
+          .receipt-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+          }
+
+          .receipt-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 0;
+            border-radius: 4px;
+            padding: 8px 18px;
+            color: #ffffff;
+            font: 700 14px/1 Arial, Helvetica, sans-serif;
+            cursor: pointer;
+            transition: filter 160ms ease;
+          }
+
+          .receipt-action:hover {
+            filter: brightness(0.94);
+          }
+
+          .receipt-back {
+            background: #2563eb;
+          }
+
+          .receipt-print {
+            background: #1f2937;
+          }
+
+          .receipt-page {
+            position: relative;
+            box-sizing: border-box;
+            width: 600px;
+            min-height: 842px;
+            overflow: hidden;
+            border: 2px solid #1f1f1f;
+            background: #ffffff;
+            color: #000000;
+            padding: 9px 17px 14px;
+            font-family: Arial, Helvetica, sans-serif;
+            box-shadow: 0 16px 28px rgba(0, 0, 0, 0.18);
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+          }
+
+          .receipt-watermark {
+            position: absolute;
+            z-index: 0;
+            top: 19px;
+            right: 14px;
+            bottom: 8px;
+            left: 91px;
+            display: grid;
+            grid-template-columns: repeat(2, max-content);
+            align-content: start;
+            column-gap: 19px;
+            row-gap: 4px;
+            overflow: hidden;
+            color: #000000;
+            opacity: 0.055;
+            pointer-events: none;
+            user-select: none;
+          }
+
+          .receipt-watermark span {
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1;
+            white-space: nowrap;
+          }
+
+          .receipt-content {
+            position: relative;
+            z-index: 1;
+          }
+
+          .receipt-header {
+            text-align: center;
+            font-weight: 700;
+          }
+
+          .receipt-heading {
+            margin: 0;
+            font-size: 14px;
+            line-height: 13px;
+            font-weight: 700;
+          }
+
+          .receipt-form-title {
+            margin: 12px 0 0;
+            font-size: 11px;
+            line-height: 12px;
+            font-weight: 700;
+          }
+
+          .receipt-rule {
+            margin: 9px 0 0;
+            font-size: 10px;
+            line-height: 11px;
+            font-weight: 700;
+          }
+
+          .receipt-description {
+            margin: 0;
+            font-size: 10px;
+            line-height: 11px;
+            font-weight: 750;
+          }
+
+          .receipt-echallan {
+            margin: 9px 0 0;
+            font-size: 11px;
+            line-height: 12px;
+            font-weight: 750;
+          }
+
+          .receipt-challan {
+            margin: 9px 0 0;
+            font-size: 13px;
+            line-height: 14px;
+            font-weight: 800;
+          }
+
+          .receipt-identity {
+            position: relative;
+            height: 103px;
+            margin-top: 4px;
+          }
+
+          .receipt-qr-block {
+            position: absolute;
+            top: 0;
+            left: -2px;
+            width: 66px;
+            text-align: center;
+          }
+
+          .receipt-qr-label {
+            display: block;
+            margin-top: 2px;
+            font-size: 9px;
+            line-height: 10px;
+            font-weight: 700;
+          }
+
+          .receipt-validity {
+            position: absolute;
+            top: 82px;
+            left: 0;
+            right: 0;
+            margin: 0;
+            text-align: center;
+            font-size: 13px;
+            line-height: 14px;
+            font-weight: 700;
+          }
+
+          .receipt-fields {
+            font-size: 12px;
+            line-height: 15px;
+            letter-spacing: 0;
+          }
+
+          .receipt-row {
+            display: flex;
+            align-items: flex-start;
+            margin: 0 0 9px;
+          }
+
+          .receipt-row.is-strong {
+            font-weight: 700;
+          }
+
+          .receipt-row.is-subrow {
+            margin-top: -1px;
+            margin-bottom: 10px;
+          }
+
+          .receipt-number {
+            flex: 0 0 18px;
+            width: 18px;
+          }
+
+          .receipt-row-text {
+            min-width: 0;
+            flex: 1;
+          }
+
+          .receipt-value {
+            font-weight: 700;
+          }
+
+          .receipt-note {
+            margin: 1px 0 0;
+            font-size: 10px;
+            line-height: 10px;
+            font-weight: 700;
+          }
+
+          .receipt-signatures {
+            display: flex;
+            justify-content: space-between;
+            gap: 44px;
+            margin: 48px 2px 0;
+          }
+
+          .receipt-signature-box {
+            position: relative;
+            box-sizing: border-box;
+            width: 256px;
+            height: 126px;
+            overflow: hidden;
+            border: 1px solid #555555;
+            background: transparent;
+          }
+
+          .receipt-signature-title {
+            display: block;
+            padding: 10px 10px 0 14px;
+            font-size: 12px;
+            line-height: 13px;
+            font-weight: 400;
+          }
+
+          .receipt-stamp {
+            position: absolute;
+            top: 15px;
+            left: 10px;
+            width: 110px;
+            height: 110px;
+            transform: rotate(-12deg);
+            opacity: 1;
+            filter: saturate(5.0);
+          }
+
+          /* --- UPDATED PRINT MEDIA QUERY --- */
+          @media print {
+            @page {
+              size: 600px 842px;
+              margin: 0;
+            }
+
+            html,
+            body {
+              margin: 0 !important;
+              padding: 0 !important;
+              height: 100vh !important;
+              overflow: hidden !important; /* Strictly prevents body scrolling/extra pages */
+              background: #ffffff !important;
+            }
+
+            .receipt-shell {
+              display: block;
+              min-height: auto;
+              height: 100vh;
+              padding: 0;
+              margin: 0;
+              background: #ffffff;
+              overflow: hidden;
+            }
+
+            .receipt-shell-inner {
+              width: 600px;
+              margin: 0;
+            }
+
+            .receipt-toolbar {
+              display: none !important;
+            }
+
+            .receipt-page {
+              width: 600px;
+              height: 842px !important; /* Changed from min-height to strictly fixed height */
+              max-height: 842px; /* Force bounds */
+              margin: 0;
+              padding: 9px 17px 14px; /* Retain padding inside the fixed height */
+              border: 2px solid #1f1f1f;
+              box-shadow: none;
+              overflow: hidden; /* Clips micro-overflows */
+              page-break-inside: avoid; /* Tells browser not to split this element */
+              break-inside: avoid;
+            }
+          }
+        `}
+      </style>
+
+      <div className="receipt-shell">
+        <div className="receipt-shell-inner">
+          <div className="receipt-toolbar">
+            <button type="button" onClick={onBack} className="receipt-action receipt-back">
+              <ArrowLeft size={17} strokeWidth={2.4} />
+              Back
+            </button>
+            <button type="button" onClick={() => window.print()} className="receipt-action receipt-print">
+              <Printer size={17} strokeWidth={2.4} />
+              Print E-Challan
+            </button>
           </div>
 
-          <div className="relative z-10">
-            <div className="text-center mb-6 print:mb-3">
-              <h1 className="text-sm font-bold uppercase tracking-wide">Government of Jammu & Kashmir</h1>
-              <h2 className="text-lg print:text-base font-semibold mt-1 print:mt-0">Department of Geology & Mining</h2>
-              <h3 className="text-md print:text-sm font-bold mt-1 print:mt-0">FORM 'A'</h3>
-              <p className="text-sm print:text-xs font-bold">[See Rule 38(5), 50(12), 60(1)(v), 70, 71]</p>
-              <p className="text-sm print:text-xs font-bold tracking-tight mt-1 print:mt-0">of challan for dispatch of mineral and its products</p>
-              <h2 className="text-sm font-bold mt-2 print:mt-1">E-CHALLAN</h2>
+          <div className="receipt-page">
+            <div className="receipt-watermark" aria-hidden="true">
+              {WATERMARK_ITEMS.map((_, index) => (
+                <span key={index}>https://geologymining.jk.gov.in/</span>
+              ))}
             </div>
 
-            <div className="text-center font-bold text-lg print:text-base mb-6 print:mb-3 tracking-wider">
-              Challan No. : {qrId}
-            </div>
+            <div className="receipt-content">
+              <header className="receipt-header">
+                <h1 className="receipt-heading">Government of Jammu & Kashmir</h1>
+                <h2 className="receipt-heading">Department of Geology & Mining</h2>
+                <h3 className="receipt-form-title">FORM 'A'</h3>
+                <p className="receipt-rule">[See Rule 38(5), 50(12), 60(1)(v), 70, 71]</p>
+                <p className="receipt-description">of challan for dispatch of mineral and its products</p>
+                <h2 className="receipt-echallan">E-CHALLAN</h2>
+                <p className="receipt-challan">Challan No. : {qrId}</p>
+              </header>
 
-            <div className="flex flex-col sm:flex-row justify-between items-end mb-6 print:mb-3">
-              <div className="flex flex-col items-center">
-                <QRCodeCanvas value={verificationUrl} size={90} className="border border-gray-300 p-1 bg-white print:w-20 print:h-20" />
-                <span className="text-xs mt-1 font-semibold mb-2 print:mb-0">(QR-Code)</span>
-              </div>
-              <div className="text-right mt-4 sm:mt-0">
-                <p className="font-semibold text-[15px] print:text-[13px]">
-                  Validity from {formatDateTime(dispatchData.valid_from)} to {formatDateTime(dispatchData.valid_upto)}
+              <section className="receipt-identity" aria-label="QR code and validity">
+                <div className="receipt-qr-block">
+                  <QRCodeCanvas value={qrValue} size={62} fgColor="#822CA7" includeMargin={false} />
+                  <span className="receipt-qr-label">(QR-Code)</span>
+                </div>
+                <p className="receipt-validity">
+                  Validity from {formatDateTime(data.valid_from)} to {formatDateTime(data.valid_upto)}
                 </p>
-              </div>
-            </div>
+              </section>
 
-            <div className="space-y-4 print:space-y-1.5">
-              <div className="flex">
-                <span className="w-8 font-semibold">1.</span>
-                <span className="flex-1">Type of mineral concessions Lease / License / Permit no. <span className="font-bold">{dispatchData.seller_name || "................................."}</span></span>
-              </div>
-              <p className="text-3px print:text-xs">
-                Issuing date: <span className="font-semibold">{formatDate(dispatchData.valid_from)}</span> &nbsp;&nbsp; Valid upto: <span className="font-semibold">{formatDate(dispatchData.valid_upto)}</span>
+              <section className="receipt-fields" aria-label="Challan details">
+                <ReceiptRow number="1">
+                  Type of mineral concessions Lease / License / Permit no.{" "}
+                  <span className="receipt-value">{value(data.seller_name)}</span>
+                </ReceiptRow>
+                <ReceiptRow className="is-subrow">
+                  Issuing date <span className="receipt-value">{formatDate(data.valid_from)}</span> Valid upto{" "}
+                  <span className="receipt-value">{formatDate(data.valid_upto)}</span>
+                </ReceiptRow>
+                <ReceiptRow number="2">
+                  Name & Style of Concessionary <span className="receipt-value">{value(data.seller_name)}</span>
+                </ReceiptRow>
+                <ReceiptRow number="3">
+                  Location of mineral concession area <span className="receipt-value">{value(data.seller_location)}</span>
+                </ReceiptRow>
+                <ReceiptRow number="4">
+                  Type of mineral Granted on mineral concessions{" "}
+                  <span className="receipt-value">{value(data.product_name)}</span>
+                </ReceiptRow>
+                <ReceiptRow number="5">
+                  Quantity of mineral granted on mineral Concessions{" "}
+                  <span className="receipt-value">{value(data.mineral_granted_qty)}</span>
+                </ReceiptRow>
+                <ReceiptRow number="6">
+                  Name & Location of Stone crusher Unit and Holder{" "}
+                  <span className="receipt-value text-[14px] font-extrabold">{value(sellerAndLocation)}</span>
+                </ReceiptRow>
+                <ReceiptRow number="7">
+                  Type of Finished Products : Sand/Bajri/Kankra (Aggregate)/Dust etc.{" "}
+                  <span className="receipt-value">{value(data.product_name, "")}</span>
+                </ReceiptRow>
+                <ReceiptRow number="8">
+                  Quantity of mineral dispatched{" "}
+                  <span className="receipt-value">{data.quantity ? `${data.quantity} (in MT)` : PLACEHOLDER}</span>
+                </ReceiptRow>
+                <ReceiptRow number="9" className="text-[15px]" strong>
+                  Date & Time of dispatch {formatDateTime(data.valid_from)} (Valid upto 5 Hours)
+                </ReceiptRow>
+                <ReceiptRow number="10" className="text-[15px]" strong>
+                  Route of the Transportation- Source {value(data.route_source, "")} Destination{" "}
+                  {value(data.route_destination, "")}
+                </ReceiptRow>
+                <ReceiptRow number="11">
+                  Rate of Mineral <span className="receipt-value">{rupees(data.mineral_rate)}</span> Total Amount
+                  (Excluding GST and Transportation charges){" "}
+                  <span className="receipt-value">{rupees(data.total_amount)}</span>
+                </ReceiptRow>
+                <ReceiptRow number="12">
+                  GST Bill/No. <span className="receipt-value">{data.gst_no || "NA"}</span> Quantity{" "}
+                  <span className="receipt-value">{value(data.gst_qty, "")}</span> Amount{" "}
+                  <span className="receipt-value">{rupees(data.gst_amount)}</span> (Enclose copy of GST Invoice)
+                </ReceiptRow>
+                <ReceiptRow number="13">
+                  Vehicle No. <span className="receipt-value">{data.vehicle_no?.toUpperCase() || ""}</span>
+                </ReceiptRow>
+                <ReceiptRow number="14">
+                  Name & Address of Consignee / Buyer / Purchaser{" "}
+                  <span className="receipt-value">{value(data.consignee_details, "")}</span>
+                </ReceiptRow>
+                <ReceiptRow number="15">
+                  Name & Phone No. of Driver <span className="receipt-value">{value(data.driver_details, "")}</span>
+                </ReceiptRow>
+              </section>
+
+              <p className="receipt-note">
+                Note: The Information mentioned in e-Challan, Such as (Validity and Vehicle No.) should be matched with the
+                information mentioned in the https://geologymining.jk.gov.in/ which can be seen after scanning the QR code
+                encrypted on e-Challan.
               </p>
-              <div className="flex"><span className="w-8 font-semibold">2.</span><span className="flex-1">Name & Style of Concessionary {dispatchData.seller_name || "................................."}</span></div>
-              <div className="flex"><span className="w-8 font-semibold">3.</span><span className="flex-1">Location of mineral concession area {dispatchData.seller_location || "................................."}</span></div>
-              <div className="flex"><span className="w-8 font-semibold">4.</span><span className="flex-1">Type of mineral Granted on mineral concessions {dispatchData.product_name || "................................."}</span></div>
-              <div className="flex"><span className="w-8 font-semibold">5.</span><span className="flex-1">Quantity of mineral granted on mineral Concessions <span className="font-bold">{dispatchData.mineral_granted_qty || "................................."}</span></span></div>
-              <div className="flex"><span className="w-8 font-semibold">6.</span><span className="flex-1">Name & Location of Stone crusher Unit and Holder <span className="font-bold">{dispatchData.seller_name}{dispatchData?.seller_location && `, ${dispatchData.seller_location}`}</span></span></div>
-              <div className="flex"><span className="w-8 font-semibold">7.</span><span className="flex-1">Type of Finished Products : Sand/Bajri/Kankra (Aggregate)/Dust etc. <span className="font-bold">{dispatchData.product_name}</span></span></div>
-              <div className="flex"><span className="w-8 font-semibold">8.</span><span className="flex-1">Quantity of mineral dispatched <span className="font-bold">{dispatchData.quantity}</span></span></div>
-              <div className="flex"><span className="w-8 font-semibold">9.</span><span className="flex-1 font-extrabold">Date & Time of dispatch <span className="font-bold">{formatDateTime(dispatchData.valid_from)}</span></span></div>
-              <div className="flex"><span className="w-8 font-semibold">10.</span><span className="flex-1 font-extrabold">Route of the Transportation- Source <span className="font-bold">{dispatchData.route_source}</span> Destination <span className="font-bold">{dispatchData.route_destination}</span></span></div>
-              <div className="flex"><span className="w-8 font-semibold">11.</span><span className="flex-1">Rate of Mineral <span className="font-bold">{dispatchData.mineral_rate}</span> Total Amount (Excluding GST and Transportation charges) <span className="font-bold">{dispatchData.total_amount}</span></span></div>
-              <div className="flex"><span className="w-8 font-semibold">12.</span><span className="flex-1">GST Bill/No. <span className="font-bold">{dispatchData.gst_no}</span> Quantity <span className="font-bold">{dispatchData.gst_qty}</span> Amount <span className="font-bold">{dispatchData.gst_amount}</span> (Enclose copy of GST Invoice)</span></div>
-              <div className="flex"><span className="w-8 font-semibold">13.</span><span className="flex-1">Vehicle No. <span className="font-bold">{dispatchData.vehicle_no?.toUpperCase()}</span></span></div>
-              <div className="flex"><span className="w-8 font-semibold">14.</span><span className="flex-1">Name & Address of Consignee / Buyer / Purchaser <span className="font-bold">{dispatchData.consignee_details}</span></span></div>
-              <div className="flex"><span className="w-8 font-semibold">15.</span><span className="flex-1">Name & Phone No. of Driver <span className="font-bold">{dispatchData.driver_details}</span></span></div>
-            </div>
 
-            <div className="mt-2 print:mt-1">
-              <p className="text-[13px] print:text-[11px] text-justify font-bold leading-tight">
-                Note: The Information mentioned in e-Challan, Such as (Validity and Vehicle No.) should be matched with the information mentioned in the https://geologymining.jk.gov.in/ which can be seen after scanning the QR code encrypted on e-Challan
-              </p>
-
-              <div className="mt-10 sm:mt-16 print:mt-4 grid grid-cols-2 gap-4 sm:gap-16 md:gap-24 print:gap-12">
-                <div className="h-32 sm:h-40 print:h-28 w-full flex flex-col text-center relative border-2 border-black overflow-hidden bg-white/80 print:bg-white">
-                  <span className="py-2 print:py-1 text-xs sm:text-sm bg-gray-50 print:bg-transparent z-10 ">Self Approved by Mineral Concessionary</span>
-                  <div className="flex-1 relative flex items-center justify-start p-2">
-                    <div className="absolute inset-0 flex items-center justify-start pointer-events-none">
-                      <img src="/stamp.png" alt="Approved Stamp" className="w-28 h-28 sm:w-32 sm:h-32 print:w-20 print:h-20 transform -rotate-12 opacity-80 print:opacity-100 object-contain" />
-                    </div>
-                  </div>
+              <section className="receipt-signatures" aria-label="Approval and signature">
+                <div className="receipt-signature-box">
+                  <span className="receipt-signature-title">Self Approved by Mineral Concessionary</span>
+                  <img src="/stamp.png" alt="Approved Stamp" className="receipt-stamp mt-0 -mx-4" />
                 </div>
 
-                <div className="h-32 sm:h-40 print:h-28 w-full flex flex-col text-center relative border-2 border-black bg-white/80 print:bg-white">
-                  <span className="py-2 print:py-1 text-xs sm:text-sm bg-gray-50 print:bg-transparent z-10 relative">Signature & Seal of Mineral Concessionary</span>
-                  <div className="flex-1 relative"></div>
+                <div className="receipt-signature-box">
+                  <span className="receipt-signature-title">Signature & Seal of Mineral Concessionary</span>
                 </div>
-              </div>
+              </section>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

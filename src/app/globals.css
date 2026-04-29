@@ -2,7 +2,7 @@
 
 @theme {
   /* This tells Tailwind to use the font variable we set in layout.jsx */
-  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Montserrat', sans-serif;
 }
 
 @layer utilities {

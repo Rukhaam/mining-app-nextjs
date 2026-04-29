@@ -3,11 +3,22 @@
 import { db } from '@/db'; 
 import { dispatches } from '@/db/schema';
 
-// Helper to generate the custom JK-XXXXXXXX challan format
-const generateChallanNo = () => {
-  // Generates 8 random digits
-  const numbers = Math.floor(10000000 + Math.random() * 90000000); 
-  return `JK-${numbers}`;
+// Helper to generate the custom challan format
+const generateChallanNo = (vehicleNo) => {
+  let prefix = 'JKXX';
+  if (vehicleNo) {
+    const cleanVehicle = vehicleNo.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+    if (cleanVehicle.startsWith('JK')) {
+      const match = cleanVehicle.match(/^JK\d{2}[A-Z]?/);
+      prefix = match ? match[0] : cleanVehicle.substring(0, 4);
+    } else if (cleanVehicle.length > 0) {
+      prefix = cleanVehicle.substring(0, 4);
+    }
+  }
+  
+  // Generates 10 random digits
+  const numbers = Math.floor(1000000000 + Math.random() * 9000000000); 
+  return `${prefix}-${numbers}`;
 };
 
 export async function createDispatchAction(formData) {
@@ -40,7 +51,7 @@ export async function createDispatchAction(formData) {
       driver_details: formData.driver_details,
       
       // Auto-generated backend fields
-      qr_id: generateChallanNo(),
+      qr_id: generateChallanNo(formData.vehicle_no),
       valid_from: validFromDate,
       valid_upto: validUptoDate, 
     };

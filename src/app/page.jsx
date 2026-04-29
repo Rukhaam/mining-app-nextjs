@@ -82,27 +82,27 @@ export default function AdminDashboard() {
 
             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
               <div className="md:col-span-2 border-b pb-2 mb-2"><h3 className="font-bold text-gray-700">General Info</h3></div>
-              <Input label="Seller Name" name="seller_name" required onChange={handleChange} />
-              <Input label="Seller Location" name="seller_location" required onChange={handleChange} />
+              <Input label="Seller Name" name="seller_name" onChange={handleChange} />
+              <Input label="Seller Location" name="seller_location" onChange={handleChange} />
               
               <div className="md:col-span-2 border-b pb-2 mb-2 mt-4"><h3 className="font-bold text-gray-700">Mineral & Cargo</h3></div>
-              <Input label="Product Name" name="product_name" required onChange={handleChange} />
-              <Input label="Mineral Granted Quantity" name="mineral_granted_qty" required onChange={handleChange} />
-              <Input label="Dispatched Quantity" name="quantity" required onChange={handleChange} />
-              <Input label="Mineral Rate" name="mineral_rate" required onChange={handleChange} />
-              <Input label="Total Amount (Excl. GST)" name="total_amount" required onChange={handleChange} />
+              <Input label="Product Name" name="product_name" onChange={handleChange} />
+              <Input label="Mineral Granted Quantity" name="mineral_granted_qty" onChange={handleChange} />
+              <Input label="Dispatched Quantity" name="quantity" onChange={handleChange} />
+              <Input label="Mineral Rate" name="mineral_rate" onChange={handleChange} />
+              <Input label="Total Amount (Excl. GST)" name="total_amount" onChange={handleChange} />
               
               <div className="md:col-span-2 border-b pb-2 mb-2 mt-4"><h3 className="font-bold text-gray-700">GST Details</h3></div>
-              <Input label="GST Bill/No" name="gst_no" required onChange={handleChange} />
-              <Input label="GST Quantity" name="gst_qty" required onChange={handleChange} />
-              <Input label="GST Amount" name="gst_amount" required onChange={handleChange} />
+              <Input label="GST Bill/No" name="gst_no" onChange={handleChange} />
+              <Input label="GST Quantity" name="gst_qty" onChange={handleChange} />
+              <Input label="GST Amount" name="gst_amount" onChange={handleChange} />
 
               <div className="md:col-span-2 border-b pb-2 mb-2 mt-4"><h3 className="font-bold text-gray-700">Transit Info</h3></div>
-              <Input label="Route Source" name="route_source" required onChange={handleChange} />
-              <Input label="Route Destination" name="route_destination" required onChange={handleChange} />
-              <Input label="Vehicle Number" name="vehicle_no" required onChange={handleChange} />
-              <Input label="Consignee Details" name="consignee_details" required onChange={handleChange} />
-              <Input label="Driver Name & Phone" name="driver_details" required onChange={handleChange} />
+              <Input label="Route Source" name="route_source" onChange={handleChange} />
+              <Input label="Route Destination" name="route_destination" onChange={handleChange} />
+              <Input label="Vehicle Number" name="vehicle_no" onChange={handleChange} />
+              <Input label="Consignee Details" name="consignee_details" onChange={handleChange} />
+              <Input label="Driver Name & Phone" name="driver_details" onChange={handleChange} />
               <Input label="Valid From (Time of Dispatch)" name="valid_from" type="datetime-local" required onChange={handleChange} />
               <Input label="Valid Upto (Expiry Time)" name="valid_upto" type="datetime-local" required onChange={handleChange} />
 
