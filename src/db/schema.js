@@ -3,6 +3,7 @@ import { pgTable, serial, varchar, timestamp } from 'drizzle-orm/pg-core';
 export const dispatches = pgTable('dispatches', {
   id: serial('id').primaryKey(),
   qr_id: varchar('qr_id', { length: 20 }).unique().notNull(), // JK-XXXXXXXX format
+  concession_type_no: varchar('concession_type_no', { length: 255 }),
   seller_name: varchar('seller_name', { length: 255 }),
   seller_location: varchar('seller_location', { length: 255 }),
   valid_from: timestamp('valid_from'),

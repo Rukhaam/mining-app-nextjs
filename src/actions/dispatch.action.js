@@ -3,22 +3,16 @@
 import { db } from '@/db'; 
 import { dispatches } from '@/db/schema';
 
-// Helper to generate the custom challan format
-const generateChallanNo = (vehicleNo) => {
-  let prefix = 'JKXX';
-  if (vehicleNo) {
-    const cleanVehicle = vehicleNo.replace(/[^A-Z0-9]/gi, '').toUpperCase();
-    if (cleanVehicle.startsWith('JK')) {
-      const match = cleanVehicle.match(/^JK\d{2}[A-Z]?/);
-      prefix = match ? match[0] : cleanVehicle.substring(0, 4);
-    } else if (cleanVehicle.length > 0) {
-      prefix = cleanVehicle.substring(0, 4);
-    }
-  }
+// Helper to generate the custom challan format based on District Code
+const generateChallanNo = (districtCode) => {
+  // Use the provided district code (e.g., 'JK01') or fallback to 'JKXX'
+  const prefix = districtCode || 'JKO4Y';
   
   // Generates 10 random digits
   const numbers = Math.floor(1000000000 + Math.random() * 9000000000); 
-  return `${prefix}-${numbers}`;
+  
+  // Format: JKxxY-1234567890
+  return `${prefix}Y-${numbers}`;
 };
 
 export async function createDispatchAction(formData) {
@@ -28,12 +22,13 @@ export async function createDispatchAction(formData) {
       return { success: false, error: "Valid from time is required" };
     }
 
-    // 2. Parse the frontend time and calculate the 4-hour strict expiry
     const validFromDate = new Date(formData.valid_from);
-    const validUptoDate = new Date(formData.valid_upto)
+    const validUptoDate = new Date(formData.valid_upto);
 
     // 3. Assemble the secure payload
     const payload = {
+      manual_challan_no: formData.manual_challan_no || null, 
+      concession_type_no: formData.concession_type_no, 
       seller_name: formData.seller_name,
       seller_location: formData.seller_location,
       route_source: formData.route_source,
@@ -50,35 +45,24 @@ export async function createDispatchAction(formData) {
       gst_amount: formData.gst_amount,
       driver_details: formData.driver_details,
       
-      // Auto-generated backend fields
-      qr_id: generateChallanNo(formData.vehicle_no),
+      // Pass the district_code from the frontend into the generator
+      qr_id: generateChallanNo(formData.district_code),
       valid_from: validFromDate,
       valid_upto: validUptoDate, 
     };
 
-    // 4. Insert into Drizzle / Postgres
     const [newDispatch] = await db
       .insert(dispatches)
       .values(payload)
-      .returning(); // .returning() ensures we get the generated row back (including qr_id)
+      .returning(); 
 
-    // 5. Send success response back to the Client Component
-    return { 
-      success: true, 
-      data: newDispatch 
-    };
+    return { success: true, data: newDispatch };
 
   } catch (error) {
     console.error("Error creating dispatch:", error);
-    
-    // Check if it's a unique constraint error (extremely rare chance of same JK- number)
     if (error.code === '23505') {
        return { success: false, error: "Challan collision. Please try generating again." };
     }
-
-    return { 
-      success: false, 
-      error: "Failed to generate dispatch due to a server error." 
-    };
+    return { success: false, error: "Failed to generate dispatch due to a server error." };
   }
 }

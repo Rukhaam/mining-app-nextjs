@@ -235,7 +235,7 @@ export default function VerifyPage() {
 
           .verify-note {
             color: #ffffff;
-            font-weight: 800;
+            font-weight: 700;
           }
 
           .verify-note p {
@@ -286,21 +286,21 @@ export default function VerifyPage() {
             margin: 0;
             font-size: 18px;
             line-height: 24px;
-            font-weight: 800;
+            font-weight: 700;
           }
 
           .verify-subtitle {
             margin: 0;
             font-size: 18px;
             line-height: 24px;
-            font-weight: 800;
+            font-weight: 700;
           }
 
           .verify-form {
             margin: 8px 0 0;
             font-size: 11px;
             line-height: 14px;
-            font-weight: 800;
+            font-weight: 700;
           }
 
           .verify-rule {
@@ -308,7 +308,7 @@ export default function VerifyPage() {
             color: #ffffff;
             font-size: 11px;
             line-height: 14px;
-            font-weight: 800;
+            font-weight: 700;
           }
 
           .verify-desc {
@@ -316,29 +316,29 @@ export default function VerifyPage() {
             color: #ffffff;
             font-size: 11px;
             line-height: 14px;
-            font-weight: 800;
+            font-weight: 700;
           }
 
           .verify-echallan {
             margin: 12px 0 0;
             font-size: 10px;
             line-height: 13px;
-            font-weight: 900;
+            font-weight: 700;
           }
 
           .verify-active-challan {
             margin: 23px 0 0;
             font-size: 17px;
             line-height: 22px;
-            font-weight: 900;
+            font-weight: 700;
           }
 
           .verify-highlight {
             color: #ffeb3b;
-            font-weight: 900;
+            font-weight: 700;
           }
 
-          .verify-qr-wrap {
+          .verify-qr-wrap { 
             margin-top: 0;
           }
 
@@ -354,7 +354,7 @@ export default function VerifyPage() {
             margin: -1px 0 0;
             font-size: 17px;
             line-height: 19px;
-            font-weight: 900;
+            font-weight: 700;
           }
 
           .verify-mineral {
@@ -362,21 +362,21 @@ export default function VerifyPage() {
             color: #ffeb3b;
             font-size: 14px;
             line-height: 18px;
-            font-weight: 900;
+            font-weight: 700;
           }
 
           .verify-validity {
             margin: 21px 0 0;
             font-size: 17px;
             line-height: 22px;
-            font-weight: 900;
+            font-weight: 700;
           }
 
           .verify-validity-hi {
             margin: 1px 0 0;
             font-size: 17px;
             line-height: 22px;
-            font-weight: 900;
+            font-weight: 700;
           }
 
           .verify-url {
@@ -426,7 +426,7 @@ export default function VerifyPage() {
           }
 
           .verify-row-content b {
-            font-weight: 900;
+            font-weight: 700;
             text-decoration: underline;
           }
 
@@ -546,7 +546,7 @@ export default function VerifyPage() {
             font-size: 29px;
             line-height: 34px;
             font-weight: 900;
-            animation: expiredTitleColor 1.6s linear infinite;
+            animation: expiredTitleColor 0.9s linear infinite;
           }
 
           .verify-expired-hi {
@@ -599,7 +599,7 @@ export default function VerifyPage() {
 
           .verify-expired-table th {
             width: 31.5%;
-            font-weight: 900;
+            font-weight: 700;
           }
 
           .verify-expired-table td {
@@ -624,13 +624,7 @@ export default function VerifyPage() {
 
           @keyframes expiredTitleColor {
             0% {
-              color: #2f46d2;
-            }
-            33% {
-              color: #ff1f8f;
-            }
-            66% {
-              color: #d71920;
+              color: #e91e63;
             }
             100% {
               color: #2f46d2;
@@ -715,8 +709,8 @@ export default function VerifyPage() {
                   <tr>
                     <th>Validity</th>
                     <td>
-                      <span className="verify-highlight">
-                        Date ({formatDate(dispatchInfo.valid_from)} to {formatDate(dispatchInfo.valid_upto)}) Time (
+                      <span className="verify-highlight ">
+                        <span className="text-white">Date </span>({formatDate(dispatchInfo.valid_from)} to {formatDate(dispatchInfo.valid_upto)}) <span className="text-white">Time</span> (
                         {formatOnlyTime(dispatchInfo.valid_from)} to {formatOnlyTime(dispatchInfo.valid_upto)})
                       </span>
                     </td>
@@ -724,7 +718,7 @@ export default function VerifyPage() {
                   <tr>
                     <th>Route of the Transportation</th>
                     <td>
-                      Source <u>{dispatchInfo.route_source}</u> Destination <u>{dispatchInfo.route_destination}</u>
+                      Source <u className="font-bold">{dispatchInfo.route_source}</u> Destination <u className="font-bold">{dispatchInfo.route_destination}</u>
                     </td>
                   </tr>
                   <tr>
@@ -756,12 +750,12 @@ export default function VerifyPage() {
                 <p className="verify-echallan">E-CHALLAN</p>
 
                 <p className="verify-active-challan">
-                  Challan No. : <span className="verify-highlight">{dispatchInfo.qr_id}</span>
-                </p>
+                 <span className="font-bold">Challan No.:</span> <span className="verify-highlight font-bold">{dispatchInfo.qr_id}</span>
+                </p> 
 
                 <div className="verify-qr-wrap">
                   <QRCodeCanvas value={qrValue} size={80} fgColor="#8d21cc" bgColor="#ffffff" includeMargin={false} />
-                  <p className="verify-qr-label">(QR-Code)</p>
+                  <p className="verify-qr-label font-bold">(QR-Code)</p>
                 </div>
 
                 <p className="verify-mineral">
@@ -781,7 +775,7 @@ export default function VerifyPage() {
               <section className="verify-detail-table" aria-label="Active challan details">
                 <DetailRow number="1">
                   Type of mineral concessions Lease / License / Permit no.{" "}
-                  <b>{value(dispatchInfo.seller_name)}</b>
+                  <b>{value(dispatchInfo.concession_type_no)}</b>
                   <br />
                   Issuing date <b>{formatDate(dispatchInfo.valid_from)}</b> Valid upto{" "}
                   <b>{formatDate(dispatchInfo.valid_upto)}</b>
@@ -836,8 +830,8 @@ export default function VerifyPage() {
 
               <section className="verify-signature" aria-label="Approval stamp">
                 <div className="verify-signature-title">Self Approved by Mineral Concessionary</div>
-                <div className="verify-signature-body">
-                  <Stamp />
+                <div className="verify-signature-body flex items-center justify-center ">
+                  <img src="https://geologymining.jk.gov.in//images/home/approveddd.png" alt="" width={120} height={120}/>
                 </div>
               </section>
             </>

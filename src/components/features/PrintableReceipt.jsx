@@ -42,17 +42,32 @@ export default function PrintableReceipt({ dispatchData, qrId, onBack }) {
     const date = getDate(dateString);
     if (!date) return "";
 
-    const hours = date.getHours();
-    const period = hours >= 12 ? "PM" : "AM";
-    const hour12 = hours % 12 || 12;
+    const hours = date.getHours(); // 24-hour format
+    const period = hours >= 12 ? "PM" : "AM"; 
 
-    return `${formatDate(dateString)} ${pad(hour12)}:${pad(date.getMinutes())} ${period}`;
+    return `${formatDate(dateString)} ${pad(hours)}:${pad(date.getMinutes())} ${period}`;
+  };
+
+  // NEW HELPER: Calculate the floored hours difference between two dates
+  const calculateValidHours = (fromDateStr, uptoDateStr) => {
+    const fromDate = getDate(fromDateStr);
+    const uptoDate = getDate(uptoDateStr);
+    
+    if (!fromDate || !uptoDate) return 5; // Default fallback if dates are missing
+
+    const diffMs = uptoDate.getTime() - fromDate.getTime();
+    if (diffMs <= 0) return 0; // Prevent negative hours if dates are reversed
+
+    return Math.floor(diffMs / (1000 * 60 * 60));
   };
 
   const value = (field, fallback = PLACEHOLDER) => field || fallback;
   const rupees = (field) => (field ? `Rs.${field}` : "Rs.");
   const sellerAndLocation = [data.seller_name, data.seller_location].filter(Boolean).join(" ");
   const qrValue = verificationUrl || `/verify/${qrId || ""}`;
+  
+  // Calculate the hours
+  const validHours = calculateValidHours(data.valid_from, data.valid_upto);
 
   return (
     <>
@@ -69,7 +84,11 @@ export default function PrintableReceipt({ dispatchData, qrId, onBack }) {
           .receipt-shell-inner {
             width: 600px;
           }
-
+          
+          .normal-text {
+            font-weight: normal;
+          }
+          
           .receipt-toolbar {
             display: flex;
             justify-content: space-between;
@@ -315,15 +334,13 @@ export default function PrintableReceipt({ dispatchData, qrId, onBack }) {
               display: block; 
               padding: 16px; 
               overflow-x: hidden;
-              overdflow-y: hidden;
+              overflow-y: hidden;
               scale: 1; /* Ensure no inherited scaling from desktop */
               margin-left: -10px; /* Counteract the 16px padding to allow full bleed to the left edge */
-             
-         
             }
             
-            .receipt-shell-inner {\
-            scale: 0.7; /* Reset any inherited scaling */
+            .receipt-shell-inner {
+              scale: 0.7; /* Reset any inherited scaling */
               /* Reset margin so it aligns exactly to the 16px left padding */
               margin: 0; 
               /* Pin the scaling anchor to the true top-left corner */
@@ -390,11 +407,19 @@ export default function PrintableReceipt({ dispatchData, qrId, onBack }) {
       <div className="receipt-shell">
         <div className="receipt-shell-inner">
           <div className="receipt-toolbar">
-            <button type="button" onClick={onBack} className="receipt-action receipt-back">
+            <button
+              type="button"
+              onClick={onBack}
+              className="receipt-action receipt-back"
+            >
               <ArrowLeft size={17} strokeWidth={2.4} />
               Back
             </button>
-            <button type="button" onClick={() => window.print()} className="receipt-action receipt-print">
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="receipt-action receipt-print"
+            >
               <Printer size={17} strokeWidth={2.4} />
               Print E-Challan
             </button>
@@ -409,103 +434,188 @@ export default function PrintableReceipt({ dispatchData, qrId, onBack }) {
 
             <div className="receipt-content">
               <header className="receipt-header">
-                <h1 className="receipt-heading">Government of Jammu & Kashmir</h1>
-                <h2 className="receipt-heading">Department of Geology & Mining</h2>
+                <h1 className="receipt-heading">
+                  Government of Jammu & Kashmir
+                </h1>
+                <h2 className="receipt-heading">
+                  Department of Geology & Mining
+                </h2>
                 <h3 className="receipt-form-title">FORM 'A'</h3>
-                <p className="receipt-rule">[See Rule 38(5), 50(12), 60(1)(v), 70, 71]</p>
-                <p className="receipt-description">of challan for dispatch of mineral and its products</p>
+                <p className="receipt-rule">
+                  [See Rule 38(5), 50(12), 60(1)(v), 70, 71]
+                </p>
+                <p className="receipt-description">
+                  of challan for dispatch of mineral and its products
+                </p>
                 <h2 className="receipt-echallan">E-CHALLAN</h2>
                 <p className="receipt-challan">Challan No. : {qrId}</p>
               </header>
 
-              <section className="receipt-identity" aria-label="QR code and validity">
+              <section
+                className="receipt-identity"
+                aria-label="QR code and validity"
+              >
                 <div className="receipt-qr-block">
-                  <QRCodeCanvas value={qrValue} size={62} fgColor="#822CA7" includeMargin={false} />
+                  <QRCodeCanvas
+                    value={qrValue}
+                    size={62}
+                    fgColor="#822CA7"
+                    includeMargin={false}
+                  />
                   <span className="receipt-qr-label">(QR-Code)</span>
                 </div>
                 <p className="receipt-validity">
-                  Validity from {formatDateTime(data.valid_from)} to {formatDateTime(data.valid_upto)}
+                  Validity from {formatDateTime(data.valid_from)} to{" "}
+                  {formatDateTime(data.valid_upto)}
                 </p>
               </section>
 
               <section className="receipt-fields" aria-label="Challan details">
                 <ReceiptRow number="1">
                   Type of mineral concessions Lease / License / Permit no.{" "}
-                  <span className="receipt-value">{value(data.seller_name)}</span>
+                  <span className="receipt-value">
+                    {value(data.concession_type_no)}
+                  </span>
                 </ReceiptRow>
                 <ReceiptRow className="is-subrow">
-                  Issuing date <span className="receipt-value">{formatDate(data.valid_from)}</span> Valid upto{" "}
-                  <span className="receipt-value">{formatDate(data.valid_upto)}</span>
+                  Issuing date{" "}
+                  <span className="receipt-value">
+                    {formatDate(data.valid_from)}
+                  </span>{" "}
+                  Valid upto{" "}
+                  <span className="receipt-value">
+                    {formatDate(data.valid_upto)}
+                  </span>
                 </ReceiptRow>
                 <ReceiptRow number="2">
-                  Name & Style of Concessionary <span className="receipt-value">{value(data.seller_name)}</span>
+                  Name & Style of Concessionary{" "}
+                  <span className="receipt-value">
+                    {value(data.seller_name)}
+                  </span>
                 </ReceiptRow>
                 <ReceiptRow number="3">
-                  Location of mineral concession area <span className="receipt-value">{value(data.seller_location)}</span>
+                  Location of mineral concession area{" "}
+                  <span className="receipt-value">
+                   ............................
+                  </span>
                 </ReceiptRow>
                 <ReceiptRow number="4">
                   Type of mineral Granted on mineral concessions{" "}
-                  <span className="receipt-value">{value(data.product_name)}</span>
+                  <span className="receipt-value">
+                    .............................
+                  </span>
                 </ReceiptRow>
                 <ReceiptRow number="5">
                   Quantity of mineral granted on mineral Concessions{" "}
-                  <span className="receipt-value">{value(data.mineral_granted_qty)}</span>
+                  <span className="receipt-value">
+                    {value(data.mineral_granted_qty)}
+                  </span>
                 </ReceiptRow>
                 <ReceiptRow number="6">
                   Name & Location of Stone crusher Unit and Holder{" "}
-                  <span className="receipt-value text-[14px] font-extrabold">{value(sellerAndLocation)}</span>
+                  <span className="receipt-value text-[14px] font-extrabold">
+                     {value(data.seller_location)}
+                  </span>
                 </ReceiptRow>
                 <ReceiptRow number="7">
-                  Type of Finished Products : Sand/Bajri/Kankra (Aggregate)/Dust etc.{" "}
-                  <span className="receipt-value">{value(data.product_name, "")}</span>
+                  Type of Finished Products : Sand/Bajri/Kankra (Aggregate)/Dust
+                  etc.{" "}
+                  <span className="receipt-value">
+                    {value(data.product_name, "")}
+                  </span>
                 </ReceiptRow>
                 <ReceiptRow number="8">
                   Quantity of mineral dispatched{" "}
-                  <span className="receipt-value">{data.quantity ? `${data.quantity} (in MT)` : PLACEHOLDER}</span>
+                  <span className="receipt-value">
+                    {data.quantity ? (
+                      <>
+                        {data.quantity}{" "}
+                        <span className="normal-text">(in MT)</span>
+                      </>
+                    ) : (
+                      PLACEHOLDER
+                    )}
+                  </span>
                 </ReceiptRow>
-                <ReceiptRow number="9" className="text-[15px]" strong>
-                  Date & Time of dispatch {formatDateTime(data.valid_from)} (Valid upto 5 Hours)
+                {/* DYNAMIC HOURS APPLIED HERE */}
+                <ReceiptRow number="9" className="text-[12px]" strong>
+                  Date & Time of dispatch {formatDateTime(data.valid_from)}{" "}
+                  (Valid upto {validHours} Hours)
                 </ReceiptRow>
-                <ReceiptRow number="10" className="text-[15px]" strong>
-                  Route of the Transportation- Source {value(data.route_source, "")} Destination{" "}
+                <ReceiptRow number="10" className="text-[12px]" strong>
+                  Route of the Transportation- Source{" "}
+                  {value(data.route_source, "")} Destination{" "}
                   {value(data.route_destination, "")}
                 </ReceiptRow>
                 <ReceiptRow number="11">
-                  Rate of Mineral <span className="receipt-value">{rupees(data.mineral_rate)}</span> Total Amount
-                  (Excluding GST and Transportation charges){" "}
-                  <span className="receipt-value">{rupees(data.total_amount)}</span>
+                  Rate of Mineral{" "}
+                  <span className="receipt-value">
+                    {rupees(data.mineral_rate)}
+                  </span>{" "}
+                  Total Amount (Excluding GST and Transportation charges){" "}
+                  <span className="receipt-value">
+                    {rupees(data.total_amount)}
+                  </span>
                 </ReceiptRow>
                 <ReceiptRow number="12">
-                  GST Bill/No. <span className="receipt-value">{data.gst_no || "NA"}</span> Quantity{" "}
-                  <span className="receipt-value">{value(data.gst_qty, "")}</span> Amount{" "}
-                  <span className="receipt-value">{rupees(data.gst_amount)}</span> (Enclose copy of GST Invoice)
+                  GST Bill/No.{" "}
+                  <span className="receipt-value">{data.gst_no || "NA"}</span>{" "}
+                  Quantity{" "}
+                  <span className="receipt-value">
+                    {value(data.gst_qty, "")}
+                  </span>{" "}
+                  Amount{" "}
+                  <span className="receipt-value">
+                    {rupees(data.gst_amount)}
+                  </span>{" "}
+                  (Enclose copy of GST Invoice)
                 </ReceiptRow>
                 <ReceiptRow number="13">
-                  Vehicle No. <span className="receipt-value">{data.vehicle_no?.toUpperCase() || ""}</span>
+                  Vehicle No.{" "}
+                  <span className="receipt-value">
+                    {data.vehicle_no?.toUpperCase() || ""}
+                  </span>
                 </ReceiptRow>
                 <ReceiptRow number="14">
                   Name & Address of Consignee / Buyer / Purchaser{" "}
-                  <span className="receipt-value">{value(data.consignee_details, "")}</span>
+                  <span className="receipt-value">
+                    {value(data.consignee_details, "")}
+                  </span>
                 </ReceiptRow>
                 <ReceiptRow number="15">
-                  Name & Phone No. of Driver <span className="receipt-value">{value(data.driver_details, "")}</span>
+                  Name & Phone No. of Driver{" "}
+                  <span className="receipt-value">
+                    {value(data.driver_details, "")}
+                  </span>
                 </ReceiptRow>
               </section>
 
               <p className="receipt-note">
-                Note: The Information mentioned in e-Challan, Such as (Validity and Vehicle No.) should be matched with the
-                information mentioned in the https://geologymining.jk.gov.in/ which can be seen after scanning the QR code
-                encrypted on e-Challan.
+                Note: The Information mentioned in e-Challan, Such as (Validity
+                and Vehicle No.) should be matched with the information
+                mentioned in the https://geologymining.jk.gov.in/ which can be
+                seen after scanning the QR code encrypted on e-Challan.
               </p>
 
-              <section className="receipt-signatures" aria-label="Approval and signature">
+              <section
+                className="receipt-signatures"
+                aria-label="Approval and signature"
+              >
                 <div className="receipt-signature-box">
-                  <span className="receipt-signature-title">Self Approved by Mineral Concessionary</span>
-                  <img src="/stamp.png" alt="Approved Stamp" className="receipt-stamp mt-0 -mx-4" />
+                  <span className="receipt-signature-title">
+                    Self Approved by Mineral Concessionary
+                  </span>
+                  <img
+                    src="/stamp.png"
+                    alt="Approved Stamp"
+                    className="receipt-stamp mt-0 -mx-4"
+                  />
                 </div>
 
                 <div className="receipt-signature-box">
-                  <span className="receipt-signature-title">Signature & Seal of Mineral Concessionary</span>
+                  <span className="receipt-signature-title">
+                    Signature & Seal of Mineral Concessionary
+                  </span>
                 </div>
               </section>
             </div>
