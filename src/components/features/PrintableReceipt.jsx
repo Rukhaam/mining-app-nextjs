@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, Printer } from "lucide-react";
 import { QRCodeCanvas } from "qrcode.react";
 import {
@@ -21,9 +22,16 @@ function ReceiptRow({ number, children, strong = false, className = "" }) {
   );
 }
 
-export default function PrintableReceipt({ dispatchData, qrId, onBack }) {
+export default function PrintableReceipt({
+  dispatchData,
+  qrId,
+  onBack,
+  backHref = "/admin/dashboard",
+}) {
+  const router = useRouter();
   const data = dispatchData || {};
   const [verificationUrl, setVerificationUrl] = React.useState("");
+  const handleBack = onBack || (() => router.push(backHref));
 
   React.useEffect(() => {
     setVerificationUrl(`${window.location.origin}/verify/${qrId || ""}`);
@@ -377,7 +385,7 @@ export default function PrintableReceipt({ dispatchData, qrId, onBack }) {
           <div className="receipt-toolbar">
             <button
               type="button"
-              onClick={onBack}
+              onClick={handleBack}
               className="receipt-action receipt-back"
             >
               <ArrowLeft size={17} strokeWidth={2.4} />

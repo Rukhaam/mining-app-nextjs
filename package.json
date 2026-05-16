@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "seed": "node seed.js"
   },
   "dependencies": {
     "dotenv": "^17.4.2",
@@ -20,7 +21,9 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "autoprefixer": "^10.5.0",
     "drizzle-kit": "^0.31.10",
-    "tailwindcss": "^4"
+    "postcss": "^8.5.14",
+    "tailwindcss": "^4.3.0"
   }
 }

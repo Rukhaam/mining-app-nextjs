@@ -1,0 +1,34 @@
+CREATE TABLE "dispatches" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"qr_id" varchar(20) NOT NULL,
+	"manual_challan_no" varchar(100),
+	"concession_type_no" varchar(255),
+	"seller_name" varchar(255),
+	"seller_location" varchar(255),
+	"valid_from" timestamp,
+	"valid_upto" timestamp,
+	"route_source" varchar(255),
+	"route_destination" varchar(255),
+	"vehicle_no" varchar(50),
+	"consignee_details" varchar(255),
+	"product_name" varchar(255),
+	"quantity" varchar(100),
+	"mineral_granted_qty" varchar(100),
+	"mineral_rate" varchar(100),
+	"total_amount" varchar(100),
+	"gst_no" varchar(100),
+	"gst_qty" varchar(100),
+	"gst_amount" varchar(100),
+	"driver_details" varchar(255),
+	"created_at" timestamp DEFAULT now(),
+	CONSTRAINT "dispatches_qr_id_unique" UNIQUE("qr_id")
+);
+--> statement-breakpoint
+CREATE TABLE "users" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"username" varchar(100) NOT NULL,
+	"password_hash" text NOT NULL,
+	"role" varchar(50) DEFAULT 'admin' NOT NULL,
+	"created_at" timestamp DEFAULT now(),
+	CONSTRAINT "users_username_unique" UNIQUE("username")
+);

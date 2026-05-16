@@ -1,0 +1,208 @@
+Error: Can't resolve 'tailwindcss' in 'C:\Users\rukha'
+    [2m[at finishWithoutResolve (C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:909:18)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1001:14][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:27:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\DescriptionFilePlugin.js:97:43][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m {
+  details: "resolve 'tailwindcss' in 'C:\\Users\\rukha'\n" +
+    '  Parsed request is a module\n' +
+    '  using description file: C:\\Users\\rukha\\package.json (relative path: .)\n' +
+    '    resolve as module\n' +
+    '      looking for modules in C:\\Users\\rukha\\node_modules\n' +
+    '        single file module\n' +
+    '          using description file: C:\\Users\\rukha\\package.json (relative path: ./node_modules/tailwindcss)\n' +
+    '            no extension\n' +
+    "              C:\\Users\\rukha\\node_modules\\tailwindcss doesn't exist\n" +
+    '            .css\n' +
+    "              C:\\Users\\rukha\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "        C:\\Users\\rukha\\node_modules\\tailwindcss doesn't exist\n" +
+    "      C:\\Users\\node_modules doesn't exist or is not a directory\n" +
+    "      C:\\node_modules doesn't exist or is not a directory"
+}
+Error: Can't resolve 'tailwindcss' in 'C:\Users\rukha'
+    [2m[at finishWithoutResolve (C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:909:18)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1001:14][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:27:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\DescriptionFilePlugin.js:97:43][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m {
+  details: "resolve 'tailwindcss' in 'C:\\Users\\rukha'\n" +
+    '  Parsed request is a module\n' +
+    '  using description file: C:\\Users\\rukha\\package.json (relative path: .)\n' +
+    '    resolve as module\n' +
+    '      looking for modules in C:\\Users\\rukha\\node_modules\n' +
+    '        single file module\n' +
+    '          using description file: C:\\Users\\rukha\\package.json (relative path: ./node_modules/tailwindcss)\n' +
+    '            no extension\n' +
+    "              C:\\Users\\rukha\\node_modules\\tailwindcss doesn't exist\n" +
+    '            .css\n' +
+    "              C:\\Users\\rukha\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "        C:\\Users\\rukha\\node_modules\\tailwindcss doesn't exist\n" +
+    "      C:\\Users\\node_modules doesn't exist or is not a directory\n" +
+    "      C:\\node_modules doesn't exist or is not a directory"
+}
+Error: Can't resolve 'tailwindcss' in 'C:\Users\rukha'
+    [2m[at finishWithoutResolve (C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:909:18)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1001:14][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:27:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\DescriptionFilePlugin.js:97:43][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m {
+  details: "resolve 'tailwindcss' in 'C:\\Users\\rukha'\n" +
+    '  Parsed request is a module\n' +
+    '  using description file: C:\\Users\\rukha\\package.json (relative path: .)\n' +
+    '    resolve as module\n' +
+    '      looking for modules in C:\\Users\\rukha\\node_modules\n' +
+    '        single file module\n' +
+    '          using description file: C:\\Users\\rukha\\package.json (relative path: ./node_modules/tailwindcss)\n' +
+    '            no extension\n' +
+    "              C:\\Users\\rukha\\node_modules\\tailwindcss doesn't exist\n" +
+    '            .css\n' +
+    "              C:\\Users\\rukha\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "        C:\\Users\\rukha\\node_modules\\tailwindcss doesn't exist\n" +
+    "      C:\\Users\\node_modules doesn't exist or is not a directory\n" +
+    "      C:\\node_modules doesn't exist or is not a directory"
+}
+Error: Can't resolve 'tailwindcss' in 'C:\Users\rukha'
+    [2m[at finishWithoutResolve (C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:909:18)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1001:14][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:27:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\DescriptionFilePlugin.js:97:43][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m {
+  details: "resolve 'tailwindcss' in 'C:\\Users\\rukha'\n" +
+    '  Parsed request is a module\n' +
+    '  using description file: C:\\Users\\rukha\\package.json (relative path: .)\n' +
+    '    resolve as module\n' +
+    '      looking for modules in C:\\Users\\rukha\\node_modules\n' +
+    '        single file module\n' +
+    '          using description file: C:\\Users\\rukha\\package.json (relative path: ./node_modules/tailwindcss)\n' +
+    '            no extension\n' +
+    "              C:\\Users\\rukha\\node_modules\\tailwindcss doesn't exist\n" +
+    '            .css\n' +
+    "              C:\\Users\\rukha\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "        C:\\Users\\rukha\\node_modules\\tailwindcss doesn't exist\n" +
+    "      C:\\Users\\node_modules doesn't exist or is not a directory\n" +
+    "      C:\\node_modules doesn't exist or is not a directory"
+}
+Error: Can't resolve 'tailwindcss' in 'C:\Users\rukha'
+    [2m[at finishWithoutResolve (C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:909:18)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1001:14][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:27:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\DescriptionFilePlugin.js:97:43][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m {
+  details: "resolve 'tailwindcss' in 'C:\\Users\\rukha'\n" +
+    '  Parsed request is a module\n' +
+    '  using description file: C:\\Users\\rukha\\package.json (relative path: .)\n' +
+    '    resolve as module\n' +
+    '      looking for modules in C:\\Users\\rukha\\node_modules\n' +
+    '        single file module\n' +
+    '          using description file: C:\\Users\\rukha\\package.json (relative path: ./node_modules/tailwindcss)\n' +
+    '            no extension\n' +
+    "              C:\\Users\\rukha\\node_modules\\tailwindcss doesn't exist\n" +
+    '            .css\n' +
+    "              C:\\Users\\rukha\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "        C:\\Users\\rukha\\node_modules\\tailwindcss doesn't exist\n" +
+    "      C:\\Users\\node_modules doesn't exist or is not a directory\n" +
+    "      C:\\node_modules doesn't exist or is not a directory"
+}
+Error: Can't resolve 'tailwindcss' in 'C:\Users\rukha'
+    [2m[at finishWithoutResolve (C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:909:18)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1001:14][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:27:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\DescriptionFilePlugin.js:97:43][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m {
+  details: "resolve 'tailwindcss' in 'C:\\Users\\rukha'\n" +
+    '  Parsed request is a module\n' +
+    '  using description file: C:\\Users\\rukha\\package.json (relative path: .)\n' +
+    '    resolve as module\n' +
+    '      looking for modules in C:\\Users\\rukha\\node_modules\n' +
+    '        single file module\n' +
+    '          using description file: C:\\Users\\rukha\\package.json (relative path: ./node_modules/tailwindcss)\n' +
+    '            no extension\n' +
+    "              C:\\Users\\rukha\\node_modules\\tailwindcss doesn't exist\n" +
+    '            .css\n' +
+    "              C:\\Users\\rukha\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "        C:\\Users\\rukha\\node_modules\\tailwindcss doesn't exist\n" +
+    "      C:\\Users\\node_modules doesn't exist or is not a directory\n" +
+    "      C:\\node_modules doesn't exist or is not a directory"
+}
+Error: Can't resolve 'tailwindcss' in 'C:\Users\rukha'
+    [2m[at finishWithoutResolve (C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:909:18)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1001:14][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:27:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\DescriptionFilePlugin.js:97:43][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m {
+  details: "resolve 'tailwindcss' in 'C:\\Users\\rukha'\n" +
+    '  Parsed request is a module\n' +
+    '  using description file: C:\\Users\\rukha\\package.json (relative path: .)\n' +
+    '    resolve as module\n' +
+    '      looking for modules in C:\\Users\\rukha\\node_modules\n' +
+    '        single file module\n' +
+    '          using description file: C:\\Users\\rukha\\package.json (relative path: ./node_modules/tailwindcss)\n' +
+    '            no extension\n' +
+    "              C:\\Users\\rukha\\node_modules\\tailwindcss doesn't exist\n" +
+    '            .css\n' +
+    "              C:\\Users\\rukha\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "        C:\\Users\\rukha\\node_modules\\tailwindcss doesn't exist\n" +
+    "      C:\\Users\\node_modules doesn't exist or is not a directory\n" +
+    "      C:\\node_modules doesn't exist or is not a directory"
+}
+Error: Can't resolve 'tailwindcss' in 'C:\Users\rukha'
+    [2m[at finishWithoutResolve (C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:909:18)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1001:14][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:27:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\DescriptionFilePlugin.js:97:43][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m
+    [2m[at eval (eval at create (C:\Users\rukha\next-logistics-track\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Users\rukha\next-logistics-track\node_modules\enhanced-resolve\lib\Resolver.js:1080:5][0m {
+  details: "resolve 'tailwindcss' in 'C:\\Users\\rukha'\n" +
+    '  Parsed request is a module\n' +
+    '  using description file: C:\\Users\\rukha\\package.json (relative path: .)\n' +
+    '    resolve as module\n' +
+    '      looking for modules in C:\\Users\\rukha\\node_modules\n' +
+    '        single file module\n' +
+    '          using description file: C:\\Users\\rukha\\package.json (relative path: ./node_modules/tailwindcss)\n' +
+    '            no extension\n' +
+    "              C:\\Users\\rukha\\node_modules\\tailwindcss doesn't exist\n" +
+    '            .css\n' +
+    "              C:\\Users\\rukha\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "        C:\\Users\\rukha\\node_modules\\tailwindcss doesn't exist\n" +
+    "      C:\\Users\\node_modules doesn't exist or is not a directory\n" +
+    "      C:\\node_modules doesn't exist or is not a directory"
+}

@@ -1,8 +1,17 @@
-import { pgTable, serial, varchar, timestamp } from 'drizzle-orm/pg-core';
+import { pgTable, serial, text, varchar, timestamp } from 'drizzle-orm/pg-core';
+
+export const users = pgTable('users', {
+  id: serial('id').primaryKey(),
+  username: varchar('username', { length: 100 }).unique().notNull(),
+  password_hash: text('password_hash').notNull(),
+  role: varchar('role', { length: 50 }).default('admin').notNull(),
+  created_at: timestamp('created_at').defaultNow(),
+});
 
 export const dispatches = pgTable('dispatches', {
   id: serial('id').primaryKey(),
   qr_id: varchar('qr_id', { length: 20 }).unique().notNull(), // JK-XXXXXXXX format
+  manual_challan_no: varchar('manual_challan_no', { length: 100 }),
   concession_type_no: varchar('concession_type_no', { length: 255 }),
   seller_name: varchar('seller_name', { length: 255 }),
   seller_location: varchar('seller_location', { length: 255 }),

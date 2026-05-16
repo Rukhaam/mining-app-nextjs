@@ -3,6 +3,7 @@
 import { db } from '@/db'; 
 import { dispatches } from '@/db/schema';
 import { parseChallanInputDate } from '@/lib/challanDate';
+import { getCurrentSession } from '@/lib/session';
 
 // Helper to generate the custom challan format based on District Code
 const generateChallanNo = (districtCode) => {
@@ -18,6 +19,12 @@ const generateChallanNo = (districtCode) => {
 
 export async function createDispatchAction(formData) {
   try {
+    const session = await getCurrentSession();
+
+    if (!session) {
+      return { success: false, error: "Please sign in to generate a dispatch." };
+    }
+
     // 1. Basic validation
     if (!formData.valid_from || !formData.valid_upto) {
       return { success: false, error: "Validity time is required" };
